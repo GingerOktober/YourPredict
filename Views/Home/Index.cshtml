@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "Узнайте, что ждёт Вас в будущем прямо сейчаc!";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="https://i.ibb.co/2WmyFK0/icon.png" type="image/png" />
+    <style>
+        #container {
+            margin: auto;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            position: fixed;
+        }
+        .text1{
+            font-family: opensans;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+            top: 100px;
+            text-align: center;
+            padding: 5px;
+            padding-right: 20px;
+            border: none;
+            float: left;
+            color: #FFFFFF;
+            position: absolute;
+            font-size: 33px;
+        }
+        .image01 {
+            height: 600px;
+            width: 600px;
+            position: absolute;
+            top: 440px;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+        }
+        .btn1 {
+            border: none;
+            outline: none;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 16px 28px;
+            border-radius: 100px;
+            font-family: opensans;
+            color: #271447; /*текст кнопки*/
+            position: absolute;
+            top: 560px;
+            left: 50.5%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            background-color: #d1c7e0; /*Цвет кнопки*/
+            font-size: 25px;
+        }
+         .btn1:hover {
+            background-color: #ac9dcf;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h2 class="text1"> Узнайте, что ждёт Вас в будущем прямо сейчаc! </h2>
+        <img id='image01' class='image01' img src="https://i.ibb.co/jvMMFVm/image.png" alt="image01" />
+        <form action="/Home/Predict" target="_blank">
+            <button class="btn1">Начать</button>
+        </form>
+    </div>
+</body>
+</html>

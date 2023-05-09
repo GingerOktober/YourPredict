@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="https://i.ibb.co/2WmyFK0/icon.png" type="image/png" />
+    <style>
+        body {
+            background-color: #080017;
+            --scroll: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+           }
+        #hat {
+            background-color: #04000D;
+            height: 60px;
+            width: 100%;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            opacity: 1;
+        }
+
+        #footer {
+            margin-top: auto;
+            width: 100%;
+            bottom: 0px;
+            background-color: #04000D;
+            height: 25px;
+            left: 0;
+            opacity: 1;
+            text-align: center;
+            color: #c2bdd1;
+            font-size: 17px;
+        }
+        .logo {
+            height: 55px;
+            width: 55px;
+            left: 200px;
+            top: 3px;
+            position: fixed;
+        }
+        .login_icon {
+            height: 21px;
+            width: 20px;
+            right: 150px;
+            top: 24px;
+            position: fixed;
+        }
+
+        .notification_icon {
+            height: 20px;
+            width: 20px;
+            right: 210px;
+            top: 25px;
+            position: fixed;
+        }
+
+        .cart_icon {
+            height: 20px;
+            width: 20px;
+            right: 270px;
+            top: 25px;
+            position: fixed;
+        }
+
+        menu {
+            font-family: opensans;
+            text-align: center;
+        }
+
+        .topmenu a {
+            font-family: opensans;
+            color: #FFFFFF;
+            display: block;
+            outline: none;
+            font-size: 18px;
+            text-align: center;
+            transition: .5s linear;
+            overflow-x: hidden;
+            text-decoration: none;
+        }
+        .topmenu > li {
+            display: inline-block;
+            margin-right: 20px;
+            position: relative;
+        }
+
+        .topmenu > li:last-child {
+            margin-right: 0;
+        }
+    </style>
+    <title> @ViewBag.Title </title>
+</head>
+<body>
+    <div id="container">
+            @RenderBody()
+    </div>
+        <div id="hat">
+            <menu class="one">
+                <ul class="topmenu">
+                <li><a href="/">Главная</a></li>
+                    <li><a href="/Home/Predict">Гадание онлайн</a></li>
+                    <li><a href="/Home/Services">Услуги</a></li>
+                    <li><a href="/Home/Goods">Магические товары</a></li>
+                    <li><a href="/Home/About">О нас</a></li>
+                </ul>
+            </menu>
+        <a href="/Home/Login">
+            <img id='login_icon' class='login_icon' img src="https://i.ibb.co/Ny5Yb7h/Login.png" alt="Войти в систему" /></a>
+        <a href="/"><img id='logo' class='logo' img src="https://i.ibb.co/qFfS1Zy/Titelloses-2713-20230502181347.png" alt="YourPredict" /></a>
+        <img id='notification_icon' class='notification_icon' img src="https://i.ibb.co/jgCxFTD/Titelloses-2654-20230415172327.png" alt="Уведомления" />
+        <a href="/Home/Cart"><img id='cart_icon' class='cart_icon' img src="https://i.ibb.co/vmNXVFR/Titelloses-2737-20230505221015.png" alt="Корзина" /></a>
+        </div>
+        <div id="footer">
+            "ООО Всем удачи и пока!"
+        </div>
+</body>
+</html>

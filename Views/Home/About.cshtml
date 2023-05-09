@@ -1,0 +1,589 @@
+﻿@{
+    ViewBag.Title = "О нас";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+class ItcSimpleSlider {
+    // базовые классы и селекторы
+    static PREFIX = 'itcss';
+    static EL_WRAPPER = `${ItcSimpleSlider.PREFIX}_wrapper`;
+    static EL_ITEM = `${ItcSimpleSlider.PREFIX}_item`;
+    static EL_ITEM_ACTIVE = `${ItcSimpleSlider.PREFIX}_item_active`;
+    static EL_ITEMS = `${ItcSimpleSlider.PREFIX}_items`;
+    static EL_CONTROL = `${ItcSimpleSlider.PREFIX}_btn`;
+    constructor(target, config) {
+        this._el = typeof target === 'string' ? document.querySelector(target) : target;
+        this._elWrapper = this._el.querySelector(`.${this.constructor.EL_WRAPPER}`);
+        this._elItems = this._el.querySelector(`.${this.constructor.EL_ITEMS}`);
+        this._elListItem = this._el.querySelectorAll(`.${this.constructor.EL_ITEM}`);
+        // экстремальные значения слайдов
+        this._exOrderMin = 0;
+        this._exOrderMax = 0;
+        this._exItemMin = null;
+        this._exItemMax = null;
+        this._exTranslateMin = 0;
+        this._exTranslateMax = 0;
+        this._states = [];
+        this._isBalancing = false;
+        // текущее значение трансформации
+        this._transform = 0;
+
+        this._clientRect = this._elWrapper.getBoundingClientRect();
+        // id таймера
+        this._config = {
+            loop: true,
+            swipe: true,
+        };
+        this._elItems.dataset.translate = '0';
+        // добавляем к слайдам data-атрибуты
+        this._elListItem.forEach((item, index) => {
+            item.dataset.order = `${index}`;
+            item.dataset.index = `${index}`;
+            item.dataset.translate = '0';
+            this._states.push(index === 0 ? 1 : 0);
+        });
+        // обновляем экстремальные значения переменных
+        this._updateExProperties();
+        // назначаем обработчики
+        this._addEventListener();
+    }
+    _changeActiveItems() {
+        this._states.forEach((item, index) => {
+            if (item) {
+                this._elListItem[index].classList.add(this.constructor.EL_ITEM_ACTIVE);
+            } else {
+                this._elListItem[index].classList.remove(this.constructor.EL_ITEM_ACTIVE);
+            }
+        });
+        this._el.dispatchEvent(new CustomEvent('change.itc.slider', { bubbles: true }));
+    }
+    // смена слайдов
+    _move() {
+        this._elItems.classList.remove(this.constructor.TRANSITION_NONE);
+        if (this._direction === 'none') {
+            const valueX = this._transform * this._clientRect.width;
+            this._elItems.style.transform = `translate3D(${valueX}px, 0px, 0.1px)`;
+            return;
+        }
+        if (!this._config.loop) {
+            const isNotMovePrev = this._states[0] && this._direction === 'prev';
+            const isNotMoveNext = this._states[this._states.length - 1] && this._direction === 'next';
+        }
+        this._transform += this._direction === 'next' ? -1 : 1;
+        if (this._direction === 'next') {
+            this._states = [...this._states.slice(-1), ...this._states.slice(0, -1)];
+        } else if (this._direction === 'prev') {
+            this._states = [...this._states.slice(1), ...this._states.slice(0, 1)];
+        }
+        this._elItems.dataset.translate = this._transform;
+        const valueX = this._transform * this._clientRect.width;
+        this._elItems.style.transform = `translate3D(${valueX}px, 0px, 0.1px)`;
+        this._elItems.dispatchEvent(new CustomEvent('moving.itc.slider', { bubbles: true }));
+        this._changeActiveItems();
+        if (!this._isBalancing) {
+            this._isBalancing = true;
+            window.requestAnimationFrame(this._balanceItems.bind(this));
+        }
+    }
+    // refresh extreme values
+    _updateExProperties() {
+        const els = Object.values(this._elListItem).map((el) => el);
+        const orders = els.map((item) => Number(item.dataset.order));
+        this._exOrderMin = Math.min(...orders);
+        this._exOrderMax = Math.max(...orders);
+        const min = orders.indexOf(this._exOrderMin);
+        const max = orders.indexOf(this._exOrderMax);
+        this._exItemMin = els[min];
+        this._exItemMax = els[max];
+        this._exTranslateMin = Number(this._exItemMin.dataset.translate);
+        this._exTranslateMax = Number(this._exItemMax.dataset.translate);
+    }
+
+    _balanceItems() {
+        if (this._direction === 'next') {
+            const exItemRight = this._exItemMin.getBoundingClientRect().right;
+            if (exItemRight < this._clientRect.left - this._clientRect.width / 2) {
+                this._exItemMin.dataset.order = `${this._exOrderMin + this._elListItem.length}`;
+                this._exItemMin.dataset.translate = `${this._exTranslateMin + this._elListItem.length}`;
+                const valueX = (this._exTranslateMin + this._elListItem.length) * this._clientRect.width;
+                this._exItemMin.style.transform = `translate3D(${valueX}px, 0px, 0.1px)`;
+                this._updateExProperties();
+            }
+        } else {
+            const exItemLeft = this._exItemMax.getBoundingClientRect().left;
+            if (exItemLeft > this._clientRect.right + this._clientRect.width / 2) {
+                this._exItemMax.dataset.order = `${this._exOrderMax - this._elListItem.length}`;
+                this._exItemMax.dataset.translate = `${this._exTranslateMax - this._elListItem.length}`;
+                const valueX = (this._exTranslateMax - this._elListItem.length) * this._clientRect.width;
+                this._exItemMax.style.transform = `translate3D(${valueX}px, 0px, 0.1px)`;
+                this._updateExProperties();
+            }
+        }
+        window.setTimeout(() => {
+            window.requestAnimationFrame(this._balanceItems.bind(this));
+        }, this._delay);
+    }
+    // adding listeners
+    _addEventListener() {
+        const onSwipeStart = (e) => {
+            if (e.target.closest(`.${this.constructor.EL_CONTROL}`)) {
+                return;
+            }
+            const event = e.type.search('touch') === 0 ? e.touches[0] : e;
+            this._swipeStartPosX = event.clientX;
+            this._swipeStartPosY = event.clientY;
+            this._hasSwipeState = true;
+            this._hasSwiping = false;
+        };
+        // click
+        this._el.addEventListener('click', (e) => {
+            const $target = e.target;
+            if ($target.classList.contains(this.constructor.EL_CONTROL)) {
+                e.preventDefault();
+                this._direction = $target.dataset.slide;
+                this._move();
+            } else if ($target.dataset.slideTo) {
+                e.preventDefault();
+                const index = parseInt($target.dataset.slideTo, 10);
+                this._moveTo(index);
+            }
+        });
+    }
+    next() {
+        this._direction = 'next';
+        this._move();
+    }
+    prev() {
+        this._direction = 'prev';
+        this._move();
+    }
+}
+    </script>
+    <link rel="shortcut icon" href="https://i.ibb.co/2WmyFK0/icon.png" type="image/png" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        .header
+        {
+            left: 0px;
+            top: 40px;
+            height: 200px;
+            background-color: black;
+            width: 100%;
+            position: relative;
+        }
+        .white_line
+        {
+            left: 0px;
+            top: 152px;
+            height: 58px;
+            background-color: white;
+            width: 100%;
+            position: absolute;
+        }
+        #wrapper {
+            margin: 0 auto;
+            width: 1000px;
+            height: 1000px;
+        }
+
+        #container {
+            margin: auto;
+            width: 100%;
+            height: 8000px;
+        }
+        #page_sections {
+            background-color: #FFFFFF;
+            top: 50px;
+            text-align: center;
+            width: 1453px;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, 0%);
+            -ms-transform: translate(-50%, -50%);
+            height: 50px;
+            border: none;
+            opacity: 1;
+            position: fixed;
+        }
+        .logotype
+        {
+            top: -1px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            height: 212px;
+            position: relative;
+        }
+        .text2 {
+            font-family: opensans;
+            left: 35%;
+            margin-right: -50%;
+            transform: translate(-50%, 0%);
+            padding: 5px;
+            padding-right: 20px;
+            top: 70px;
+            border: none;
+            float: left;
+            color: #FFFFFF;
+            position: relative;
+            line-height: 30px;
+            display: block;
+        }
+
+        .text3 {
+            font-family: opensans;
+            text-align: left;
+            left: 35%;
+            margin-right: -50%;
+            transform: translate(-50%, 0%);
+            padding: 5px;
+            padding-right: 20px;
+            top: 200px;
+            border: none;
+            float: left;
+            color: #FFFFFF;
+            position: relative;
+            display: block;
+        }
+        .text4 {
+            top: 35px;
+            color: #fff;
+            position: relative;
+            right: 20px;
+            margin-left: 550px;
+            line-height: 25px;
+        }
+        
+        .text5 {
+            font-family: opensans;
+            padding: 5px;
+            padding-right: 20px;
+            top: 320px;
+            border: none;
+            color: #FFFFFF;
+            position: relative;
+            line-height: 30px;
+            display: block;
+            text-align: center;
+            display: block;
+        }
+
+        .text6 {
+            top: 35px;
+            color: #000;
+            position: relative;
+            right: 20px;
+            width: 440px;
+            margin-left: 520px;
+            line-height: 25px;
+        }
+
+        .diploms_cont {
+            top: 50px;
+            position: relative;
+            width: 500px;
+            left: 18px;
+            float: left;
+        }
+
+        .cont1 {
+            background-color: #110034;
+            height: 600px;
+            top: 255px;
+            position: relative;
+            width: 1000px;
+        }
+        .cont2
+        {
+            background-color: #fffef8;
+            height: 550px;
+            top: 30px;
+            position: relative;
+            width: 1000px;
+        }
+        .cont {
+            position: relative;
+            width: 600px;
+        }
+            .cont .btn2 {
+                border: thick double #271447;
+                outline: none;
+                display: inline-block;
+                text-decoration: none;
+                cursor: pointer;
+                padding: 16px 28px;
+                border-radius: 100px;
+                font-family: opensans;
+                color: #271447; /*текст кнопки*/
+                position: absolute;
+                top: 20px;
+                left: 80px;
+                background-color: #fff; /*Цвет кнопки*/
+                font-size: 25px;
+            }
+
+                .cont .btn2:hover {
+                    background-color: #ac9dcf;
+                }
+
+        .dopmenu a {
+            font-family: opensans;
+            color: #000;
+            display: block;
+            outline: none;
+            transition: .5s linear;
+            overflow-x: hidden;
+        }
+
+        .dopmenu > li {
+            display: inline-block;
+            margin-right: 20px;
+            position: relative;
+        }
+        .cont2 .i01
+        {
+            height: 100%;
+            width: 430px;
+            left: 0px;
+            float: left;
+            position: relative;
+        }
+        .cont2 .stars {
+            top: 30px;
+            height: 60px;
+            width: 85px;
+            margin-left: 0px;
+            position: relative;
+        }
+        .cards {
+            margin: 0 auto;
+            height: 450px;
+            width: 780px;
+            top: 130px;
+            position: relative;
+            left: 80%;
+            margin-right: -50%;
+            transform: translate(-50%, 0%);
+        }
+        .row {
+          display: flex;
+          flex-wrap: wrap;
+          padding: 0 4px;
+        }
+        .column {
+          flex: 25%;
+          max-width: 32%;
+          padding: 0 3px;
+        }
+        .column img {
+            margin-top: 5px;
+            vertical-align: middle;
+            width: 100%;
+        }
+
+        .itcss {
+            position: relative;
+            max-width: 600px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .itcss_wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* стили для элемента, в котором непосредственно расположены элементы (слайды) */
+        .itcss_items {
+            display: flex;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            transition: transform 0.5s ease;
+            will-change: transform;
+        }
+
+        /* стили для элементов */
+        .itcss_item {
+            position: relative;
+            flex: 0 0 100%;
+            max-width: 100%;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            will-change: transform;
+        }
+
+        /* кнопки Prev и Next */
+        .itcss_btn {
+            position: absolute;
+            top: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 3rem;
+            height: 4rem;
+            color: #fff;
+            background: rgb(0 0 0 / 10%);
+            border: none;
+            outline: none;
+            transform: translateY(-50%);
+            opacity: 0.5;
+        }
+
+        .itcss_btn:hover,
+        .itcss_btn:focus {
+            color: #fff;
+            opacity: 0.7;
+        }
+
+        .itcss_btn_prev {
+            left: -37px;
+        }
+
+        .itcss_btn_next {
+            right: -29px;
+        }
+
+        .itcss_btn::before {
+            content: "";
+            display: inline-block;
+            width: 2rem;
+            height: 3rem;
+            background: transparent no-repeat center center;
+            background-size: 100% 100%;
+        }
+
+        .itcss_btn_prev::before {
+            background-image: url("https://i.ibb.co/DRvVtyT/11.png");
+        }
+
+        .itcss_btn_next::before {
+            background-image: url("https://i.ibb.co/zRrj5Ss/12.png");
+        }
+
+        Textinbox
+        {
+            height: 500px;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // активация слайдера
+            new ItcSimpleSlider('.itcss', {
+                loop: true,
+                swipe: true
+            });
+        });</script>
+</head>
+<body>
+    <div class='header'>
+        <div class="white_line"></div>
+        <img id="logotype" class="logotype" img src="https://i.ibb.co/0jZKgMc/Titelloses-2746-20230508170222.png">
+    </div>
+    <div id="wrapper">
+        <div id="container">
+            <div class="text2"> 
+                <h2>Почему нашим специалистам можно доверять?<br /></h2>
+                <p><br />• 458-летний опыт магии и гаданий.<br />• Секреты многих поколений колдунов и гадалок.<br />• Желание и умение помочь, ответственность.<br />• Мы владеем сотнями обрядов.<br />• Наше с вами общение абсолютно конфиденциально.<br />• Основной наш принцип — «Не навреди».<br />• Все наши услуги надежны и абсолютно безопасны.</p>
+            </div>
+            <img id='cards' class='cards' img src="https://i.ibb.co/mT0P02P/tarot-51.png" />
+            <div class="cont">
+                <form action="/Home/Services" target="_blank">
+                <button class="btn2">Заказать обряд</button>
+                </form>
+            </div>
+            <div class="text3">
+                <h2>Сертификаты наших специалистов<br /></h2>
+                </div>
+                <div class="cont1">
+                <div class="diploms_cont">
+                    <div class="row">
+                        <div class="column">
+                            <img src="https://i.ibb.co/zXys6j5/01.png">
+                            <img src="https://i.ibb.co/ggj1hcR/05.png">
+                            <img src="https://i.ibb.co/WxD4c2H/07.png">
+                        </div>
+                        <div class="column">
+                            <img src="https://i.ibb.co/p0P1YxQ/Titelloses-2742-20230508131958.png">
+                            <img src="https://i.ibb.co/GCqhGMJ/Titelloses-2744-20230508133224.png">
+                        </div>
+                        <div class="column">
+                            <img src="https://i.ibb.co/72ywwYv/Titelloses-2741-20230508131803.png">
+                            <img src="https://i.ibb.co/R63VtFf/Titelloses-2743-20230508132631.png">
+                            <img src="https://i.ibb.co/wKgyTJ7/03.png" />
+                        </div>
+                    </div>
+                </div>
+                <div class="text4">
+                    <div class="itcss">
+                        <div class="itcss_wrapper">
+                            <div class="itcss_items">
+                                <div class="itcss_item">
+                                    <div class="Textinbox">
+                                    <h2>Абеляшев Александр Викторович</h2>
+                                    Родился 8 апреля 2003г.<br> Является потомственным колдуном и предсказателем. Получил дар и знания от своего прадеда - опытного прорицателя. Уже с 9 лет мальчик заметил в себе дар к предвидению и ощутил связь с космосом.<br>Начав развивать свои способности, он почти два года провёл в цыганской общине, обучаясь гаданию на картах таро у лучших колдунов.<br>С 12 лет начал активно обучаться у лучших магов-мастеров мира, постоянно повышая свой уровень.<br>Лишь малая часть полученных им в школах магии сертификатов представлена здесь.<br>В последствии о нём стали узнавать всё больше людей.<br>В 16 лет посетил Африку для обучения магии Вуду.<br>В 20 лет Александр перевёл свой бизнес на онлайн режим, чтобы как можно больше нуждающихся в его услугах могли обратиться к нему за помощью.
+                                    </div>
+                                </div>
+                                <div class="itcss_item">
+                                    <div class="Textinbox">
+                                        <h2>Кривов Илья Алексеевич</h2>
+                                        Родился 22 января 2003г.<br> Илья Алексеевич - один из известнейших гипнотизёров эпохи - "Гипнотизёр в цилиндре".<br>После трагического события, произошедшего с ним в глубоком детстве, Илья обрёл невероятные пророческие и иллюзионные способности.<br>Уже в 16 лет он выучился на психолога и имел определённые знания в области гипноза. Завершил десятки различных школ гипноза и психиатрии. За последние годы освоил множество видов гипноза, в том числе и гипноз Эриксона. Профессионально владеет гипнозом в медицинских целях, чем сумел помочь огромному количеству людей.<br>В 18 лет лично встретился с Гудини, который признал исключительные способности Ильи.<br> Сейчас активно помогает всем нуждающимся в его услугах через онлайн связь.
+                                    </div>
+                                </div>
+                                <div class="itcss_item">
+                                    <div class="Textinbox">
+                                        <h2>Хайруллина Марта Амировна</h2>
+                                        Родилась 23 января 2004г.<br> Марта - обладательница могущественной силы ясновидения и белой магии.<br>Уже в шесть лет Марта слышала голоса, которые поведали девочке о том, что существуют странные миры, о которых обычный человек и не подозревает.<br>На протяжении многих лет с самого детства она старалась помочь всем, кто в этом особо нуждался.  В 13 лет стала ученицей одной из величайших ведьм в истории - Марии Лаво. А уже в 18 окончила свыше 40 курсов и школ магии.<br>Последние годы ясновидица помогает полиции распутывать самые трудные уголовные дела, не забывая и про помощь обычным гражданам. Ежедневно магия и ясновидение Марты на расстоянии помогают сотням людей с самыми разными проблемами.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="itcss_btn itcss_btn_prev" role="button" data-slide="prev"></button>
+                        <button class="itcss_btn itcss_btn_next" role="button" data-slide="next"></button>
+                    </div>                
+                    </div>
+                </div>
+
+            <div class="text5">
+                <h2>Отзывы<br /></h2>
+                <h1>СЧАСТЛИВЫХ КЛИЕНТОВ</h1>
+                <div class="cont2">
+                    <img class="i01" img src="https://i.ibb.co/cXFsyZh/image.jpg" />
+                    <img id="stars" class="stars" img src="https://i.ibb.co/N1gZtbF/stars.png" />
+                    <div class="text6">
+                        <div class="itcss">
+                            <div class="itcss_wrapper">
+                                <div class="itcss_items">
+                                    <div class="itcss_item">
+                                        <div class="Textinbox">
+                                            <h2>Горащенко Дарья</h2>
+                                            Хочу оставить здесь свой отзыв о маге Александре.<br>Один человек долгое время не давал мне спокойно жить, постоянно преследуя и навязывая своё общение. Я решила любой ценой избавить себя от неё.<br>Очень много псевдо-магов попадались как на личном приеме так и в интернете, а результат вообще никакого, чуть до инфаркта не довели. К счастью мне попался на глаза сайт YourPredict. Профессионал всё сделал как надо, и к оговоренному сроку все получилось.<br>Благодаря проведённому ритуалу с огнём эта знакомая меня больше не беспокоит.<br>Большое спасибо Александру, Вы отлично справилилсь!!
+                                            </div>
+                                    </div>
+                                    <div class="itcss_item">
+                                        <div class="Textinbox">
+                                            <h2>Кривов Илья Алексеевич</h2>
+                                        </div>
+                                    </div>
+                                    <div class="itcss_item">
+                                        <div class="Textinbox">
+                                            <h2>Хайруллина Марта Амировна</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="itcss_btn itcss_btn_prev" role="button" data-slide="prev"></button>
+                            <button class="itcss_btn itcss_btn_next" role="button" data-slide="next"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p><br>А отзывы несчастных клиентов мы вам не покажем :Р</p>
+                </div>
+    </div>
+</body>
+</html>
