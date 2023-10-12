@@ -5,13 +5,15 @@
     <style>
         body {
             background-color: #080017;
-            --scroll: 0;
+            font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            margin: 0;
+            padding: 0;
            }
-        #hat {
+        #hat  {
             background-color: #04000D;
             height: 60px;
             width: 100%;
@@ -19,6 +21,7 @@
             top: 0px;
             left: 0px;
             opacity: 1;
+            display: block;
         }
 
         #footer {
@@ -29,9 +32,11 @@
             height: 25px;
             left: 0;
             opacity: 1;
+            bottom: 0px;
             text-align: center;
             color: #c2bdd1;
             font-size: 17px;
+            display: block;
         }
         .logo {
             height: 55px;
@@ -39,6 +44,7 @@
             left: 200px;
             top: 3px;
             position: fixed;
+            cursor: pointer;
         }
         .login_icon {
             height: 21px;
@@ -46,22 +52,24 @@
             right: 150px;
             top: 24px;
             position: fixed;
+            cursor: pointer;
         }
-
-        .notification_icon {
-            height: 20px;
-            width: 20px;
-            right: 210px;
-            top: 25px;
-            position: fixed;
-        }
-
         .cart_icon {
             height: 20px;
             width: 20px;
             right: 270px;
             top: 25px;
             position: fixed;
+            cursor: pointer;
+        }
+
+        .favor_icon {
+            height: 24px;
+            width: 24px;
+            right: 205px;
+            top: 22px;
+            position: fixed;
+            cursor: pointer;
         }
 
         menu {
@@ -88,7 +96,7 @@
 
         .topmenu > li:last-child {
             margin-right: 0;
-        }
+            }
     </style>
     <title> @ViewBag.Title </title>
 </head>
@@ -109,7 +117,7 @@
         <a href="/Home/Login">
             <img id='login_icon' class='login_icon' img src="https://i.ibb.co/Ny5Yb7h/Login.png" alt="Войти в систему" /></a>
         <a href="/"><img id='logo' class='logo' img src="https://i.ibb.co/qFfS1Zy/Titelloses-2713-20230502181347.png" alt="YourPredict" /></a>
-        <img id='notification_icon' class='notification_icon' img src="https://i.ibb.co/jgCxFTD/Titelloses-2654-20230415172327.png" alt="Уведомления" />
+        <a href="/Home/Favorite"><img src="https://i.ibb.co/kxxpJBL/2833-20230908081557.png" class="favor_icon" alt="Избранное"></a>
         <a href="/Home/Cart"><img id='cart_icon' class='cart_icon' img src="https://i.ibb.co/vmNXVFR/Titelloses-2737-20230505221015.png" alt="Корзина" /></a>
         </div>
         <div id="footer">

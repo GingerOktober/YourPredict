@@ -1,0 +1,61 @@
+﻿@model IEnumerable<App.Models.Cards>
+@using App.Models;
+@{
+    bool x = true;
+    long currentTimeMillis = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+    Random random = new Random((int)currentTimeMillis);
+    List
+    <Cards> modelList = Model.ToList();
+    int[] randomId = new int[5];
+    Array.Clear(randomId, 0, randomId.Length);
+    for (int i = 0; i < randomId.Length; i++)
+    {
+        x = true;
+        while (x)
+        {
+            x = false;
+            randomId[i] = random.Next(2, 177);
+            if (randomId[i] > 78 && randomId[1] < 101)
+            {
+                randomId[i] = random.Next(101, 177);
+                for (int j = 0; j < randomId.Length; j++)
+                {
+                    if (i != j && (randomId[i] == randomId[j] || randomId[i] == randomId[j] - 100))
+                    {
+                        x = true;
+                    }
+                }
+            }
+            for (int j = 0; j < randomId.Length; j++)
+            {
+                if (i != j && (randomId[i] == randomId[j] || randomId[i] == randomId[j] + 100))
+                {
+                    x = true;
+                }
+            }
+        }
+    }
+    foreach (var item in modelList)
+    {
+        if (item.CardId == randomId[1])
+        {
+            <div id="myDiv1" data-image-link="@item.image_link" title="@item.Title" text="@item.Description" arcane="@item.Arcane" position="@item.position"></div>
+        }
+        if (item.CardId == randomId[2])
+        {
+            <div id="myDiv2" data-image-link="@item.image_link" title="@item.Title" text="@item.Description" arcane="@item.Arcane" position="@item.position"></div>
+        }
+        if (item.CardId == randomId[3])
+        {
+            <div id="myDiv3" data-image-link="@item.image_link" title="@item.Title" text="@item.Description" arcane="@item.Arcane" position="@item.position"></div>
+        }
+        if (item.CardId == randomId[4])
+        {
+            <div id="myDiv4" data-image-link="@item.image_link" title="@item.Title" text="@item.Description" arcane="@item.Arcane" position="@item.position"></div>
+        }
+        if (item.CardId == randomId[0])
+        {
+            <div id="myDiv5" data-image-link="@item.image_link" title="@item.Title" text="@item.Description" arcane="@item.Arcane" position="@item.position"></div>
+        }
+    }
+    }
