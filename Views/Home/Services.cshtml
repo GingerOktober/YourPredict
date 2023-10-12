@@ -1,10 +1,11 @@
-﻿@{
+﻿@model IEnumerable<App.Models.Goodss>
+@{
     ViewBag.Title = "Услуги";
     Layout = "/Views/Shared/_Layout.cshtml";
 }
-<!DOCTYPE html>
-<html>
-<head>
+@using (Html.BeginForm("Services", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -188,77 +189,188 @@
         }
     </style>
     <title> Узнайте, что ждёт Вас в будущем прямо сейчаc! </title>
-</head>
 <body>
     <div id="wrapper">
         <div id="container">
             <h1 class="title">Наши услуги</h1>
             <div class="cont01">
                 <div class="textincont-white">
-                    <h2>Гадание на таро</h2>
-                    Истина ближе, чем кажется.<br>Встретившись с Александром, Вы можете узнать, что ждёт Вас в будущем, получить ответы на вопросы о прошлом или узнать тайны настоящего.<br>Отвечают ли на Ваши чувства взаимностью?<br>Какое магическое толкование у Ваших снов?<br>Чего следует опасаться в будущем?<br>Карты могут ответить на любой Ваш вопрос.
-                    <button class="btn-light">Подробнее</button>
+                        @foreach (var item in Model)
+                        {
+                            if (item.GoodId == 1)
+                            {
+                                <h2>@item.Name</h2>
+                                <p>@item.Description</p>
+                                <form data-goodid="@item.GoodId" method="post">
+                                    <input type="hidden" name="goodId" value="@item.GoodId" />
+                                    <button type="submit" class="btn-light addToCartButton" data-goodid="@item.GoodId">Заказать</button>
+                                </form>
+                            }
+                        }
                 </div>
             </div>
             <div class="cont02">
                 <div class="textincont-black">
-                    <h2>Гипноз</h2>
-                    Порой, истина, которую ищут люди, заключена в них самих.<br>Наш профессиональный гипнотизёр Илья поможет Вам разобраться в Ваших истиных чувствах и мыслях, принять свои проблемы и найти в себе силы для их решения.<br>Также Илья является опытным гипнотерапевтом, который способен помогать в самых различных областях медицины. Заболевания нервной системы, психические расстройства, болезни внутренних органов, хирургические вмешательства, кожные заболевания — неполный список областей, в которых Илья может успешно пользоваться своими силами.
-                </div>                    
-                <button class="btn-dark">Подробнее</button>
+
+                        @foreach (var item in Model)
+                        {
+                            if (item.GoodId == 2)
+                            {
+                                <h2>@item.Name</h2>
+                                <p>@item.Description</p>
+                                <form data-goodid="@item.GoodId" method="post">
+                                    <input type="hidden" name="goodId" value="@item.GoodId" />
+                                    <button type="submit" class="btn-dark addToCartButton" data-goodid="@item.GoodId">Заказать</button>
+                                </form>
+                            }
+                        }
                 </div>
+
+            </div>
             <div class="conts">
             <div class="cont03">
                 <div class="textincont-black">
-                    <h2>Любовный приворот</h2>
-                    Вы впали в отчаянье?<br>Не знаете, как изменить вашу жизнь к лучшему? Вам кажется, что уже никто не поможет?<br>Это не так! Я, Марта, потомственная белая ведьма, приду к вам на помощь!<br>Мои силы и знания помогут вам вернуть любимого человека, восстановить семью или получить взаимность от человека, безответные чувства к которому не дают Вам ощутить счастье.
-
-                    </div><button class="btn-dark">Подробнее</button>
+                            @foreach (var item in Model)
+                            {
+                                if (item.GoodId == 3)
+                                {
+                                    <h2>@item.Name</h2>
+                                    <form data-goodid="@item.GoodId" method="post">
+                                        <input type="hidden" name="goodId" value="@item.GoodId" />
+                                        <button type="submit" class="btn-dark addToCartButton" data-goodid="@item.GoodId">Заказать</button>
+                                    </form>
+                                    <p>@item.Description</p>
+                                }
+                            }
+                        </div>
             </div>
             <div class="cont04">
                 <div class="textincont-white">
-                    <h2>Снять порчу</h2>
-                        Можете ли Вы с уверенностью сказать, есть ли на Вас порча, венец безбрачия или родовое проклятие?<br>Наши специалисты, Александр и Марта, смогут поведать Вам об этом уже при первом общении.<br>Определить причину — депрессия это или наведенная порча, выяснить, есть ли на вас приворот или сглаз. А затем подобрать для Вас индивидуальную программу, при помощи которой они смогут избавить Вас от влияния черной магии.
-                    </div><button class="btn-light">Подробнее</button>
+
+                            @foreach (var item in Model)
+                            {
+                                if (item.GoodId == 4)
+                                {
+                                    <h2>@item.Name</h2>
+                                    <p>@item.Description</p>
+                                    <form data-goodid="@item.GoodId" method="post">
+                                        <input type="hidden" name="goodId" value="@item.GoodId" />
+                                        <button type="submit" class="btn-light addToCartButton" data-goodid="@item.GoodId">Заказать</button>
+                                    </form>
+                                }
+                            }
+                    </div>
                 </div>
             <div class="cont05">
                 <div class="textincont-black">
-                    <h2>Изменить судьбу</h2>
-                        Все идет не так, как должно идти? Не можете наладить отношения с близкими людьми? Неудачи валятся со всех сторон, и Вы не знаете, как с ними справиться?<br>Всё это – верные признаки того, что Ваша судьба нуждается во вмешательстве и исправлении.<br>Наши специалисты помогут Вам исправить карму и обрести счастье!
-                    </div><button class="btn-dark">Подробнее</button>
+
+                            @foreach (var item in Model)
+                            {
+                                if (item.GoodId == 5)
+                                {
+                                    <h2>@item.Name</h2>
+                                    <p>@item.Description</p>
+                                    <form data-goodid="@item.GoodId" method="post">
+                                        <input type="hidden" name="goodId" value="@item.GoodId" />
+                                        <button type="submit" class="btn-dark addToCartButton" data-goodid="@item.GoodId">Заказать</button>
+                                    </form>
+                                }
+                            }
+                            </div>
                 </div>
             </div>
             <div class="conts">
             <div class="cont06">
-                <div class="textincont-white">
-                    <h2>Привлечь деньги</h2>
-                        Финансовые проблемы, как и любые другие, всегда имеют под собой какие-то скрытые причины, поэтому и эти Ваши проблемы я тоже могу решить. Установив их причины и проведя необходимые обряды, я направлю к Вам денежный поток!
-                </div>
-            <button class="btn-light">Подробнее</button>
+                    <div class="textincont-white">
+
+                            @foreach (var item in Model)
+                            {
+                                if (item.GoodId == 6)
+                                {
+                                    <h2>@item.Name</h2>
+                                    <p>@item.Description</p>
+                                    <form data-goodid="@item.GoodId" method="post">
+                                        <input type="hidden" name="goodId" value="@item.GoodId" />
+                                        <button type="submit" class="btn-light addToCartButton" data-goodid="@item.GoodId">Заказать</button>
+                                    </form>
+                                }
+                            }
+                    </div>
             </div>
             <div class="cont07">
-                <div class="textincont-black">
-                    <h2>Магическая защита</h2>
-                        Мы живём в сумеречном мире, в котором полно недобрых, жестоких и завистливых людей. Они могут нечаянно или намеренно причинить Вам зло.<br>Для того чтобы уберечь Вас и Вашу семью от этого зла, необходимо установить надежную энергетическую защиту и улучшить связь с космосом.
-                </div>
-                    <button class="btn-dark">Подробнее</button>
+                    <div class="textincont-black">
+
+                            @foreach (var item in Model)
+                            {
+                                if (item.GoodId == 7)
+                                {
+                                    <h2>@item.Name</h2>
+                                    <p>@item.Description</p>
+                                    <form data-goodid="@item.GoodId" method="post">
+                                        <input type="hidden" name="goodId" value="@item.GoodId" />
+                                        <button type="submit" class="btn-dark addToCartButton" data-goodid="@item.GoodId">Заказать</button>
+                                    </form>
+                                }
+                            }
+                    </div>
             </div>
             <div class="cont08">
-                <div class="textincont-black">
-                    <h2>Исцеление от болезней</h2>
-                    Даже если Ваш недуг сложен и врачи не в сосотоянии Вам помочь, не вздумайте опускать руки.<br>Наши специалисты, профессиональный гипнотизёр Илья и белая ведьма-целительница Марта,сделают всё, что в их силах, чтобы сохранить Ваше здоровье и избавить Вас от любых недугов.
+                    <div class="textincont-black">
+
+                            @foreach (var item in Model)
+                            {
+                                if (item.GoodId == 8)
+                                {
+                                    <h2>@item.Name</h2>
+                                    <p>@item.Description</p>
+                                    <form data-goodid="@item.GoodId" method="post">
+                                        <input type="hidden" name="goodId" value="@item.GoodId" />
+                                        <button type="submit" class="btn-dark addToCartButton" data-goodid="@item.GoodId">Заказать</button>
+                                    </form>
+                                }
+                            }
                 </div>
-                    <button class="btn-dark">Подробнее</button>
+                    </div>
                 </div>
-            </div>
             <div class="cont09">
                 <div class="textincont-white">
-                    <h2>Навести порчу</h2>
-                    Основной принцип нашего колдоского сообщества - "Не навреди".<br>Однако, порой невозможно защитить невинных и светлых людей от их недобрых и жестоких врагов не прибегнув к магии.<br>Лишь в самых крайних случаях наши сильнейшие маги, Марта и Александр, могут оказать Вам услугу в наведении порчи.
-                </div>
-                <button class="btn-light">Подробнее</button>
+                        @foreach (var item in Model)
+                        {
+                            if (item.GoodId == 9)
+                            {
+                                <h2>@item.Name</h2>
+                                <p>@item.Description</p>
+                                <form data-goodid="@item.GoodId" method="post">
+                                    <input type="hidden" name="goodId" value="@item.GoodId" />
+                                    <button type="submit" class="btn-light addToCartButton" data-goodid="@item.GoodId">Заказать</button>
+                                </form>
+                            }
+                        }
+                        </div>
+                    </div>
             </div>
         </div>
-        </div>
+        <script>
+            $(document).ready(function () {
+                $('.addToCartButton').click(function () {
+                    var goodId = $(this).data('goodid');
+                    var userId = 1;
+                    $.ajax({
+                        url: '/Home/AddToCart',
+                        type: 'POST',
+                        data: { goodId: goodId, userId: userId },
+                        success: function (response) {
+                            if (response.exists == 0) {
+                                window.location.href = '/Home/Registration';
+                            }
+                            else
+                            {
+                                window.location.href = '/Home/Services';
+                            }
+                        }
+                    });
+                });
+            });
+            </script>
 </body>
-</html>
+}
