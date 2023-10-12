@@ -1,10 +1,15 @@
-var builder = WebApplication.CreateBuilder(args);
+п»їusing Microsoft.EntityFrameworkCore;
+using App.Models;
 
-builder.Services.AddControllersWithViews(); // добавляем сервисы MVC
+var builder = WebApplication.CreateBuilder(args);
+string connection = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<YourPredictContext>(options => options.UseSqlServer(connection));
+
+
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// устанавливаем сопоставление маршрутов с контроллерами
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
