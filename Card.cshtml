@@ -1,0 +1,494 @@
+﻿@{
+    ViewBag.Title = "Товар.";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+@model App.Models.ComboModelProfileANDGoodsCard
+@{
+
+    int productIndex = Convert.ToInt32(Context.Request.Query["productIndex"]);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        /* Основные стили для компоновки */
+        .product-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Две колонки */
+            grid-template-rows: min-content min-content; /* Две строки */
+            grid-gap: 20px; /* Расстояние между элементами */
+            border-radius: 30px;
+            max-width: 1100px;
+            max-height: auto;
+            margin: 80px auto 20px;
+            padding: 50px;
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+        }
+        /* Стили для блоков */
+        .left-top, .left-bottom, .right-top, .right-bottom {
+            padding: 20px;
+            border: none;
+        }
+
+            /* Стили для изображения */
+            .left-top img {
+                max-width: 100%;
+                height: auto;
+            }
+
+        .related-products {
+            border-radius: 10px;
+            width: 1100px;
+            margin: auto;
+            height: 400px;
+            padding: 10px 50px 30px;
+            background-color: #f7f7f7;
+        }
+
+        .lenta {
+            border-radius: 10px;
+            width: 1100px;
+            margin-left: -10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .product-card {
+            width: 25%;
+            height: 2
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 215px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            background-color: white;
+        }
+
+        .product-name {
+            font-weight: bold;
+        }
+
+        .product-price {
+            color: #e74c3c;
+        }
+
+        .product-old-price {
+            text-decoration: line-through;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .product-images {
+            margin: 20px;
+            align-items: center;
+            margin-left: 50px;
+        }
+
+        .thumbnails {
+            margin-right: 20px;
+        }
+
+        .card__add {
+            display: block;
+            width: 100%;
+            font-weight: 400;
+            font-size: 17px;
+            color: #271447;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #271447;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 0px;
+        }
+
+            .card__add:hover {
+                border: 1px solid #ff6633;
+                background-color: #ff6633;
+                color: #fff;
+            }
+        .thumbnail {
+            margin: 5px;
+            border-radius: 10px;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .main-image {
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            display: flex;
+        }
+
+
+        .product-details {
+            flex: 1;
+            padding-left: 20px;
+            flex-direction: column;
+        }
+
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #777;
+            font-size: 18px;
+        }
+
+        .discount {
+            color: #e74c3c;
+            font-size: 18px;
+        }
+
+        .thumbnails {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            margin-right: 20px;
+        }
+
+        .description {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+
+        .review-input {
+            margin-top: 20px;
+            width: 93%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            resize: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 50%;
+            max-width: 700px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            width: 150%;
+            height: 150%;
+        }
+
+            .close:hover, .close:focus {
+                color: #bbb;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        .review-container {
+            border-radius: 10px;
+            max-height: 400px;
+            width: 100%;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #fff;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+
+        .reviews-list {
+            /* Для списков отзывов может потребоваться дополнительный стиль, чтобы они правильно размещались в контейнере */
+        }
+
+        .review {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #f7f7f7;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .review-author {
+            font-weight: bold;
+        }
+
+        .review-date {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .review-text {
+            margin-top: 10px;
+        }
+
+        #submit-review {
+            border: none;
+            background: transparent;
+        }
+
+        .image_send {
+            width: 50px;
+            height: 50px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+    </style>
+    <title>Страница товара</title>
+</head>
+<body>
+    <div class="product-container">
+        <div class="left-top">
+            <div class="product-images">
+                <div class="thumbnails">
+                    @foreach (var item in Model.GoodsData)
+                    {
+                        if (item.GoodId == productIndex)
+                        {
+                            if (item.image_link2 != null)
+                            {
+                                <img class="thumbnail" src=@item.image_link1 alt="Thumbnail 1" onclick="changeMainImage(this)">
+                                <img class="thumbnail" src=@item.image_link2 alt="Thumbnail 2" onclick="changeMainImage(this)">
+                                <img class="thumbnail" src=@item.image_link3 alt="Thumbnail 3" onclick="changeMainImage(this)">
+                            }
+                        }
+                    }
+                </div>
+                @foreach (var item in Model.GoodsData)
+                {
+                    if (item.GoodId == productIndex)
+                    {
+                        <img class="main-image" src="@item.image_link1" id="MainImage" onclick="openFullScreenImage()">
+
+
+                    }
+                }
+            </div>
+
+        </div>
+
+        <div class="left-bottom">
+            @foreach (var item in Model.GoodsData)
+            {
+                if (item.GoodId == productIndex)
+                {
+                    <h1>@item.Name</h1>
+                    <p class="price">Цена: @item.Price руб.</p>
+                    <p class="old-price">@item.Old_price руб.</p>
+                    <p class="discount">Скидка @item.Discount %</p>
+                    <div class="description">
+                        <p>@item.Description</p>
+                    </div>
+                    <form data-goodid="@item.GoodId">
+                        <button type="button" class="card__add addToCartButton">В корзину</button>
+                    </form>
+                }
+            }
+
+
+
+        </div>
+        <div class="right-top">
+
+            <div class="review-container">
+                <h2>Отзывы</h2>
+                <div class="reviews-list">
+                    @foreach (var review in Model.CommentData)
+                    {
+                        if (review.GoodId == productIndex)
+                        {
+                            @foreach (var item in Model.UsersData)
+                                {
+                                    if (item.UserId == review.UserId)
+                                    {
+                                        <span class="review-author">@item.Name</span>
+                                    }
+                                }
+                            <div class="review">
+                                <div class="review-header">
+                                    <span class="review-date">@review.DateCreate.ToShortDateString()</span>
+                                </div>
+                                <p class="review-text">@review.Text</p>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+
+        </div>
+        <div class="right-bottom">
+            @foreach (var item in Model.GoodsData)
+            {
+                if (item.GoodId == productIndex)
+                {
+                    <form id="review-form" action="/Home/AddComment" method="POST">
+                        <textarea id="review-textarea" class="review-input" name="commentText" placeholder="Оставьте отзыв..."></textarea>
+                        <button type="submit" id="submit-review" data-product-index="@productIndex">
+                            <img src="https://i.ibb.co/HGws0SW/time-1024x1024.png" class="image_send" alt="Отправить">
+                        </button>
+                    </form>
+                }
+            }
+
+            <div id="myModal" class="modal">
+                <span class="close" onclick="closeModal();">&times;</span>
+                <img class="modal-content" id="img01">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="related-products">
+        <h2>Вам может быть интересно:</h2>
+        <div class="lenta">
+            @{
+                var productList = Model.GoodsData.Take(5).ToList();
+            }
+
+            @foreach (var item in productList)
+            {
+                if (item.GoodId != productIndex)
+                {
+                     <a href="@Url.Action("Card", new {productIndex = @item.GoodId })" class="product-card">
+                            <img class="product-image" src=@item.image_link1>
+                            <p class="product-name">@item.Name</p>
+                            <p class="product-price">@item.Price Руб</p>
+                            <p class="product-old-price">@item.Old_price Руб</p>
+                        </a>
+                }
+                }
+                </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        var productIndex = @productIndex;
+        function changeMainImage(thumbnail) {
+            var mainImage = document.getElementById('MainImage');
+            mainImage.src = thumbnail.src;
+        }
+
+        $(document).ready(function () {
+            $(".main-image").click(function () {
+                var modal = $("#myModal");
+                var modalImg = $("#img01");
+                modal.css("display", "block");
+                modalImg.attr("src", this.src);
+            });
+
+            $(".close").click(function () {
+                $("#myModal").css("display", "none");
+            });
+        });
+
+        document.getElementById('MainImage').addEventListener('click', function () {
+            if (currentMainImage) {
+                var modal = document.getElementById('myModal');
+                var modalImg = document.getElementById('img01');
+
+                modal.style.display = 'block';
+                modalImg.src = currentMainImage;
+            }
+        });
+        function openFullScreenImage() {
+            var mainImage = document.getElementById('MainImage');
+            var modal = document.getElementById('myModal');
+            var modalImg = document.getElementById('img01');
+
+            modal.style.display = 'block';
+            modalImg.src = mainImage.src;
+
+            // Добавьте следующую часть для закрытия модального окна при клике на изображение
+            modalImg.onclick = function () {
+                modal.style.display = 'none';
+            }
+        }
+
+
+        function closeModal() {
+            var modal = document.getElementById('myModal');
+            modal.style.display = 'none';
+        }
+
+        $(document).ready(function () {
+            $("#review-form").submit(function (event) {
+                event.preventDefault();
+                var commentText = $("#review-textarea").val();
+                console.log(commentText);
+                $.ajax({
+                    url: "/Home/AddComment",
+                    type: "POST",
+                    data: { text: commentText,
+                        goodid: productIndex
+                    },
+                    success: function () {
+                        $("#review-textarea").val("");
+                        location.reload();
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            $('.addToCartButton').click(function () {
+                var goodId = productIndex;
+                $.ajax({
+                    url: '/Home/AddToCart',
+                    type: 'POST',
+                    data: { goodId: goodId},
+                    success: function (response) {
+                        if (response.exists == 0) {
+                            window.location.href = '/Home/Login';
+                        }
+                        else {
+                            window.location.href = '/Home/Goods';
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

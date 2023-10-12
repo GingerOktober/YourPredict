@@ -1,0 +1,305 @@
+﻿@model App.Models.ComboModelFavorites
+@{
+    ViewBag.Title = "Услуги";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранное</title>
+    <style>
+        .cards {
+            border-radius: 5px;
+            background-color: white;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            width: 100%;
+            max-width: 1200px;
+            column-gap: 10px;
+            row-gap: 40px;
+            margin: 70px auto;
+            padding: 30px;
+            justify-content: center; /* Измените это свойство на центрирование по горизонтали */
+            align-items: center; /* Добавьте это свойство для центрирования по вертикали */
+            text-align: center; /* Добавьте это свойство для центрирования текста внутри .cards */
+        }
+
+
+        .card {
+            width: 225px;
+            height: 450px;
+            box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            border-radius: 4px;
+            transition: 0.2s;
+            position: relative;
+            margin-top: 15px;
+        }
+
+            .card:hover {
+                box-shadow: 4px 8px 16px rgba(255, 102, 51, 0.2);
+            }
+
+        .card__top {
+            flex: 0 0 220px; /* Задаем высоту 220px, запрещаем расширение и сужение по высоте */
+            position: relative;
+            overflow: hidden; /* Скрываем, что выходит за пределы */
+        }
+
+        .favorite-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .heart-filled,
+        .heart-empty {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s;
+        }
+
+        .heart-empty {
+            display: none;
+        }
+
+        .product-card:hover .heart-filled {
+            transform: scale(1.1);
+        }
+
+        .product-card:hover .heart-empty {
+            transform: scale(1.1);
+        }
+
+        .card__image {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+            .card__image > img {
+                border-radius: 15px;
+                width: 100%;
+                height: 100%;
+                object-fit: contain; /* Встраиваем картинку в контейнер card__image */
+                transition: 0.2s;
+            }
+
+            /* При наведении - увеличиваем картинку */
+            .card__image:hover > img {
+                transform: scale(1.1);
+            }
+
+        /* Размещаем скидку на товар относительно изображения */
+        .card__label {
+            padding: 4px 8px;
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: #ff6633;
+            border-radius: 4px;
+            font-weight: 400;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .card__bottom {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card__price::after {
+            margin-left: 4px;
+            position: relative;
+        }
+
+        .card__price--discount {
+            font-weight: 700;
+            font-size: 15px;
+            color: #414141;
+            display: flex;
+            flex-wrap: wrap-reverse;
+        }
+
+        .card__price--common {
+            font-weight: 400;
+            font-size: 14px;
+            color: #000;
+            display: flex;
+            flex-wrap: wrap-reverse;
+            justify-content: flex-end;
+        }
+
+
+        .card__title {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 400;
+            font-size: 17px;
+            color: #414141;
+        }
+
+            .card__title:hover {
+                color: #ff6633;
+            }
+
+        .card__add {
+            display: block;
+            width: 100%;
+            font-weight: 400;
+            font-size: 17px;
+            color: #271447;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #271447;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 0px;
+        }
+
+            .card__add:hover {
+                border: 1px solid #ff6633;
+                background-color: #ff6633;
+                color: #fff;
+            }
+
+        .center-text {
+            grid-column: span 4; /* Занимаем все 4 колонки в сетке */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center; /* Центрирование текста по центру */
+            height: 100%; /* Занимаем всю высоту контейнера .cards */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="cards">
+        @{
+            bool hasFavorites = false; // Переменная для отслеживания наличия товаров в избранном
+        }
+        @if(Model.UserId!=0)
+        {
+            @foreach (var item in Model.FavoritData)
+            {
+                if (item.UserId == Model.UserId)
+                {
+                    @foreach (var obj in Model.GoodsData)
+                    {
+                        if (obj.GoodId == item.GoodId)
+                        {
+                            hasFavorites = true;
+                            <div class="card">
+
+                                <div class="card__top">
+
+                                    <a href="@Url.Action("Card", new { productIndex = obj.GoodId })" class="card__image">
+                                        <img src="@obj.image_link1" alt="@obj.Name" />
+                                    </a>
+                                    <div class="card" data-goodid="@obj.GoodId">
+                                        <div class="favorite-button" onclick="toggleFavorite(this)">
+                                            <img src="https://i.ibb.co/kD6KdwS/2833-20230911015815.png" class="heart-filled" alt="Добавить в избранное">
+                                            <img src="https://i.ibb.co/mCznMYj/2833-20230911015740.png" class="heart-empty" alt="Удалить из избранного">
+                                        </div>
+                                    </div>
+                                    <p class="card__label">-@obj.Discount%</p>
+                                </div>
+                                <div class="card__bottom">
+                                    <div class="card__prices">
+                                        <p>Со скидкой:</p>
+                                        <p class="cardprice cardprice--discount">@obj.Price ₽</p>
+                                        <p>Обычная цена:</p>
+                                        <s class="cardprice cardprice--common">@obj.Old_price ₽</s>
+                                    </div>
+                                    <a href="@Url.Action("Card", new {productIndex = @obj.GoodId })" class="card__title">@obj.Name</a>
+                                    <form data-goodid="@obj.GoodId">
+                                        <button type="button" class="card__add addToCartButton">В корзину</button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                }
+            }
+
+        }
+        @if (!hasFavorites && Model.UserId!=0)
+        {
+            <div class="center-text">
+                <p style="font-size: 24px; font-weight: bold;">В вашем избранном пока нет товаров.</p>
+            </div>
+        }
+        else
+        {
+            <div class="center-text">
+                <p style="font-size: 24px; font-weight: bold;">Авторизуйтесь для добавления товаров в избранное.</p>
+            </div>
+        }
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const favoriteButtons = document.querySelectorAll('.favorite-button img');
+
+        function toggleFavorite(button) {
+            const filledHeart = button.querySelector('.heart-filled');
+            const emptyHeart = button.querySelector('.heart-empty');
+            const card = button.closest('.card');
+            const goodId = card.getAttribute('data-goodid');
+
+            if (filledHeart.style.display === 'none') {
+                addToFavorites(goodId, () => {
+                    filledHeart.style.display = 'inline-block';
+                    emptyHeart.style.display = 'none';
+                });
+            } else {
+                removeFromFavorites(goodId, () => {
+                    filledHeart.style.display = 'none';
+                    emptyHeart.style.display = 'inline-block';
+                });
+            }
+        }
+
+        function addToFavorites(goodId, callback) {
+            $.ajax({
+                url: '/Home/AddToFavorites',
+                type: 'POST',
+                data: { goodId: goodId },
+                success: function (response) {
+                    if (response.success) {
+                        callback();
+                    }
+                }
+            });
+            location.reload();
+        }
+
+        function removeFromFavorites(goodId, callback) {
+            $.ajax({
+                url: '/Home/RemoveFromFavorites',
+                type: 'POST',
+                data: { goodId: goodId },
+                success: function (response) {
+                    if (response.success) {
+                        callback();
+                    }
+                }
+            });
+            location.reload();
+        }
+    </script>
+
+</body>
+</html>

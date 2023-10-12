@@ -1,0 +1,653 @@
+﻿@{
+    ViewBag.Title = "О нас";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        function next_1() {
+            let countOfElements = 3;
+            for (let i = 1; i <= 3; i++) {
+                if (document.querySelector(`.el${i}`).getAttribute('style').indexOf('display: block') != -1) {
+                    var current = i;
+                }
+            }
+
+            if (current == countOfElements) {
+                document.querySelector(`.el${current}`).style.display = 'none';
+                document.querySelector(`.el1`).style.display = 'block';
+            } else {
+                document.querySelector(`.el${current}`).style.display = 'none';
+                document.querySelector(`.el${current + 1}`).style.display = 'block';
+            }
+        }
+
+        function prev_1() {
+            let countOfElements = 3;
+            for (let i = 1; i <= 3; i++) {
+                if (document.querySelector(`.el${i}`).getAttribute('style').indexOf('display: block') != -1) {
+                    var current = i;
+                }
+            }
+
+            if (current == 1) {
+                document.querySelector(`.el${current}`).style.display = 'none';
+                document.querySelector(`.el${countOfElements}`).style.display = 'block';
+            } else {
+                document.querySelector(`.el${current}`).style.display = 'none';
+                document.querySelector(`.el${current - 1}`).style.display = 'block';
+            }
+        }
+
+        function next_2() {
+            let countOfElements = 3;
+            for (let i = 1; i <= 3; i++) {
+                if (document.querySelector(`.pl${i}`).getAttribute('style').indexOf('display: block') != -1) {
+                    var current = i;
+                }
+            }
+
+            if (current == countOfElements) {
+                document.querySelector(`.pl${current}`).style.display = 'none';
+                document.querySelector(`.pl1`).style.display = 'block';
+            } else {
+                document.querySelector(`.pl${current}`).style.display = 'none';
+                document.querySelector(`.pl${current + 1}`).style.display = 'block';
+            }
+        }
+
+        function prev_2() {
+            let countOfElements = 3;
+            for (let i = 1; i <= 3; i++) {
+                if (document.querySelector(`.pl${i}`).getAttribute('style').indexOf('display: block') != -1) {
+                    var current = i;
+                }
+            }
+
+            if (current == 1) {
+                document.querySelector(`.pl${current}`).style.display = 'none';
+                document.querySelector(`.pl${countOfElements}`).style.display = 'block';
+            } else {
+                document.querySelector(`.pl${current}`).style.display = 'none';
+                document.querySelector(`.pl${current - 1}`).style.display = 'block';
+            }
+        }
+    </script>
+    <link rel="shortcut icon" href="https://i.ibb.co/2WmyFK0/icon.png" type="image/png" />
+    <style>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+        * {
+            box-sizing: border-box;
+        }
+        .header
+        {
+            left: 0px;
+            top: 40px;
+            height: 200px;
+            background-color: black;
+            width: 100%;
+            position: relative;
+        }
+        .white_line
+        {
+            left: 0px;
+            top: 152px;
+            height: 58px;
+            background-color: white;
+            width: 100%;
+            position: absolute;
+        }
+        #wrapper {
+            margin: 0 auto;
+            width: 1000px;
+            height: 1000px;
+        }
+        #container {
+            margin: auto;
+            width: 100%;
+            height: 3150px;
+        }
+        #container1 {
+            margin: auto;
+            width: 100%;
+        }
+        #page_sections {
+            background-color: #FFFFFF;
+            top: 50px;
+            text-align: center;
+            width: 1453px;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, 0%);
+            -ms-transform: translate(-50%, -50%);
+            height: 50px;
+            border: none;
+            opacity: 1;
+            position: fixed;
+        }
+        .logotype
+        {
+            top: -1px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            height: 212px;
+            position: relative;
+        }
+        .text2 {
+            font-family: opensans;
+            left: 35%;
+            margin-right: -50%;
+            transform: translate(-50%, 0%);
+            padding: 5px;
+            padding-right: 20px;
+            top: 70px;
+            border: none;
+            float: left;
+            color: #FFFFFF;
+            position: relative;
+            font-size: 20px;
+            line-height: 35px;
+            display: block;
+        }
+
+        .text3 {
+            font-family: opensans;
+            text-align: left;
+            left: 35%;
+            margin-right: -50%;
+            transform: translate(-50%, 0%);
+            padding: 5px;
+            padding-right: 20px;
+            top: 160px;
+            border: none;
+            float: left;
+            font-size: 20px;
+            color: #FFFFFF;
+            position: relative;
+            display: block;
+        }
+        .text4 {
+            top: 35px;
+            color: #fff;
+            position: relative;
+            right: 20px;
+            margin-left: 550px;
+            line-height: 25px;
+        }
+        .text5 {
+            font-family: opensans;
+            padding: 5px;
+            padding-right: 20px;
+            top: 320px;
+            border: none;
+            color: #FFFFFF;
+            position: relative;
+            line-height: 30px;
+            display: block;
+            text-align: center;
+            display: block;
+        }
+        .text6 {
+            top: 35px;
+            color: #000;
+            position: relative;
+            right: 20px;
+            width: 440px;
+            margin-left: 520px;
+            line-height: 25px;
+        }
+        .text7 {
+            font-family: opensans;
+            margin-left: 40%;
+            border: none;
+            color: #FFFFFF;
+            position: relative;
+            display: flex;
+            margin-top: 60%;
+            font-size: 30px;
+        }
+
+        .text8 {
+            font-family: opensans;
+            border: none;
+            color: #FFFFFF;
+            position: relative;
+            display: flex;
+            margin-top: 0%;
+            font-size: 40px;
+            display: flex;
+            text-align:center;
+            line-height: 50px;
+        }
+        .diploms_cont {
+            top: 50px;
+            position: relative;
+            width: 500px;
+            left: 18px;
+            float: left;
+        }
+        .counts_cont {
+            top: 390px;
+            position: relative;
+            width: 500px;
+            display: block;
+            left: 250px;
+            float: left;
+            color: white;
+        }
+        .contacts_cont {
+            position: relative;
+            width: 500px;
+            display: block;
+            left: 250px;
+            float: left;
+            color: white;
+        }
+        .cont1 {
+            background-color: #110034;
+            height: 600px;
+            top: 255px;
+            position: relative;
+            width: 1000px;
+        }
+        .cont2
+        {
+            background-color: #fffef8;
+            height: 550px;
+            top: 30px;
+            position: relative;
+            width: 1000px;
+        }
+        .cont {
+            position: relative;
+            width: 600px;
+        }
+            .cont .btn2 {
+                border: thick double #271447;
+                outline: none;
+                display: inline-block;
+                text-decoration: none;
+                cursor: pointer;
+                padding: 16px 28px;
+                border-radius: 100px;
+                font-family: opensans;
+                color: #271447; /*текст кнопки*/
+                position: absolute;
+                top: 20px;
+                left: 80px;
+                background-color: #fff; /*Цвет кнопки*/
+                font-size: 25px;
+            }
+                .cont .btn2:hover {
+                    background-color: #ac9dcf;
+                }
+        .cont2 .i01
+        {
+            height: 100%;
+            width: 430px;
+            left: 0px;
+            float: left;
+            position: relative;
+        }
+        .cont2 .stars {
+            top: 30px;
+            height: 60px;
+            width: 85px;
+            margin-left: 0px;
+            position: relative;
+        }
+        .cards {
+            margin: 0 auto;
+            height: 450px;
+            width: 780px;
+            top: 130px;
+            position: relative;
+            left: 80%;
+            margin-right: -50%;
+            transform: translate(-50%, 0%);
+        }
+        .row {
+          display: flex;
+          flex-wrap: wrap;
+          padding: 0 4px;
+        }
+        .column {
+          flex: 25%;
+          max-width: 32%;
+          padding: 0 3px;
+        }
+
+        .column2 {
+            flex: 25%;
+            max-width: 50%;
+            padding: 15px;
+        }
+        .column img {
+            margin-top: 5px;
+            vertical-align: middle;
+            width: 100%;
+
+        }
+
+        .itcss {
+            position: relative;
+            max-width: 600px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .itcss_wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+        .image
+        {
+            width: 30px;
+            height: 50px;
+            border: none;
+        }
+        .itcss_btn {
+            width: 30px;
+            height: 50px;
+            position: absolute;
+            display: block;
+            top: 50%;
+            color: #fff;
+            border: none;
+            outline: none;
+        }
+
+        .btn_prev1 {
+            display: block;
+            position: absolute;
+            right: 21px;
+            border: none;
+            background: rgb(256 256 256 / 0%);
+        }
+
+        .btn_next1 {
+            background: rgb(256 256 256 / 0%);
+            display: block;
+            border: none;
+            position: absolute;
+            margin-left: 1445%;
+        }
+        .btn_prev2 {
+            display: block;
+            position: absolute;
+            right: 30px;
+            border: none;
+            background: rgb(0 0 0 / 10%);
+        }
+
+        .btn_next2 {
+            background: rgb(0 0 0 / 10%);
+            display: block;
+            border: none;
+            position: absolute;
+            margin-left: 1450%;
+        }
+        .itcss_btn:hover,
+        .itcss_btn:focus {
+            color: #fff;
+            opacity: 0.7;
+        }
+        Textinbox
+        {
+            height: 500px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left:0;
+            top:0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+           
+
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 50%;
+            max-width: 700px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            width: 150%;
+            height: 150%;
+        }
+
+        .close:hover, .close:focus{
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .tg {
+            padding-left: 30px;
+        }
+        .mail_numb
+        {
+            margin-left: 5%;
+            width: 900px;
+            font: opensans;
+            margin-top: 20%;
+            border: 2px solid #fff;
+            color: #fff;
+            font-size: 20px;
+            padding: 15px 15px 15px 15px;
+
+        }
+    </style>
+</head>
+<body>
+    <div class='header'>
+        <div class="white_line"></div>
+        <img id="logotype" class="logotype" img src="https://i.ibb.co/0jZKgMc/Titelloses-2746-20230508170222.png">
+    </div>
+    <div id="wrapper">
+        <div id="container1">
+            <div>
+            <div class="text2"> 
+                <h2>Почему нашим специалистам можно доверять?<br /></h2>
+                <p><br />• 458-летний опыт магии и гаданий.<br />• Секреты многих поколений колдунов и гадалок.<br />• Желание и умение помочь, ответственность.<br />• Мы владеем сотнями обрядов.<br />• Наше с вами общение абсолютно конфиденциально.<br />• Основной наш принцип — «Не навреди».<br />• Все наши услуги надежны и абсолютно безопасны.</p>
+            </div>
+            <img id='cards' class='cards' img src="https://i.ibb.co/mT0P02P/tarot-51.png" />
+            <div class="cont">
+                <form action="/Home/Services" target="_blank">
+                <button class="btn2">Заказать обряд</button>
+                </form>
+            </div>
+            </div>
+
+            <div class="text3">
+                <h2>Сертификаты наших специалистов<br /></h2>
+                </div>
+                <div class="cont1">
+                <div class="diploms_cont">
+                    <div class="row">
+                        <div class="column">
+                            <img src="https://i.ibb.co/zXys6j5/01.png">
+                            <img src="https://i.ibb.co/ggj1hcR/05.png">
+                            <img src="https://i.ibb.co/WxD4c2H/07.png">
+                        </div>
+                        <div class="column">
+                            <img src="https://i.ibb.co/p0P1YxQ/Titelloses-2742-20230508131958.png">
+                            <img src="https://i.ibb.co/GCqhGMJ/Titelloses-2744-20230508133224.png">
+                        </div>
+                        <div class="column">
+                            <img src="https://i.ibb.co/72ywwYv/Titelloses-2741-20230508131803.png">
+                            <img src="https://i.ibb.co/R63VtFf/Titelloses-2743-20230508132631.png">
+                            <img src="https://i.ibb.co/wKgyTJ7/03.png">
+                        </div>
+                    </div>
+                </div>
+                <div id="myModal" class="modal">
+                    <span class="close" onclick="closeModal();">&times;</span>
+                    <img class="modal-content" id="img01">
+                </div>
+                <div class="text4">
+                    <div class="itcss">
+                        <div class="itcss_wrapper">
+                            <div class="elements">
+                                <div class="els el1" style="display: block;">
+                                    <div class="Textinbox">
+                                    <h2>Абеляшев Александр Викторович</h2>
+                                    Родился 8 апреля 2003г.<br> Является потомственным колдуном и предсказателем. Получил дар и знания от своего прадеда - опытного прорицателя. Уже с 9 лет мальчик заметил в себе дар к предвидению и ощутил связь с космосом.<br>Начав развивать свои способности, он почти два года провёл в цыганской общине, обучаясь гаданию на картах таро у лучших колдунов.<br>С 12 лет начал активно обучаться у лучших магов-мастеров мира, постоянно повышая свой уровень.<br>Лишь малая часть полученных им в школах магии сертификатов представлена здесь.<br>В последствии о нём стали узнавать всё больше людей.<br>В 16 лет посетил Африку для обучения магии Вуду.<br>В 20 лет Александр перевёл свой бизнес на онлайн режим, чтобы как можно больше нуждающихся в его услугах могли обратиться к нему за помощью.
+                                    </div>
+                                </div>
+                                <div class="els el2" style="display: none;">
+                                    <div class="Textinbox">
+                                        <h2>Кривов Илья Алексеевич</h2>
+                                        Родился 22 января 2003г.<br> Илья Алексеевич - один из известнейших гипнотизёров эпохи - "Гипнотизёр в цилиндре".<br>После трагического события, произошедшего с ним в глубоком детстве, Илья обрёл невероятные пророческие и иллюзионные способности.<br>Уже в 16 лет он выучился на психолога и имел определённые знания в области гипноза. Завершил десятки различных школ гипноза и психиатрии. За последние годы освоил множество видов гипноза, в том числе и гипноз Эриксона. Профессионально владеет гипнозом в медицинских целях, чем сумел помочь огромному количеству людей.<br>В 18 лет лично встретился с Гудини, который признал исключительные способности Ильи.<br> Сейчас активно помогает всем нуждающимся в его услугах через онлайн связь.
+                                    </div>
+                                </div>
+                                <div class="els el3" style="display: none;">
+                                    <div class="Textinbox">
+                                        <h2>Хайруллина Марта Амировна</h2>
+                                        Родилась 23 января 2004г.<br> Марта - обладательница могущественной силы ясновидения и белой магии.<br>Уже в шесть лет Марта слышала голоса, которые поведали девочке о том, что существуют странные миры, о которых обычный человек и не подозревает.<br>На протяжении многих лет с самого детства она старалась помочь всем, кто в этом особо нуждался.  В 13 лет стала ученицей одной из величайших ведьм в истории - Марии Лаво. А уже в 18 окончила свыше 40 курсов и школ магии.<br>Последние годы ясновидица помогает полиции распутывать самые трудные уголовные дела, не забывая и про помощь обычным гражданам. Ежедневно магия и ясновидение Марты на расстоянии помогают сотням людей с самыми разными проблемами.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                            <div class="itcss_btn">
+                                <button class="btn_prev1" onclick="prev_1()"><img class="image" src="https://i.ibb.co/wdhk7BD/11.png"></button>
+                                <button class="btn_next1" onclick="next_1()"><img class="image" src="https://i.ibb.co/Hg7JWHN/12.png"></button>
+                                
+                            </div>                
+                    </div>
+                </div>
+                </div>
+            <div class="text5">
+                <h2>Отзывы<br /></h2>
+                <h1>СЧАСТЛИВЫХ КЛИЕНТОВ</h1>
+                <div class="cont2">
+                    <img class="i01" img src="https://i.ibb.co/cXFsyZh/image.jpg" />
+                    <img id="stars" class="stars" img src="https://i.ibb.co/N1gZtbF/stars.png" />
+                    <div class="text6">
+                        <div class="itcss">
+                            <div class="itcss_wrapper">
+                                <div class="elements">
+                                    <div class="els pl1" style="display: block;">
+                                        <div class="Textinbox">
+                                            <h2>Горащенко Дарья</h2>
+                                            Хочу оставить здесь свой отзыв о маге Александре.<br>Один человек долгое время не давал мне спокойно жить, постоянно преследуя и навязывая своё общение. Я решила любой ценой избавить себя от неё.<br>Очень много псевдо-магов попадались как на личном приеме так и в интернете, а результат вообще никакого, чуть до инфаркта не довели. К счастью мне попался на глаза сайт YourPredict. Профессионал всё сделал как надо, и к оговоренному сроку все получилось.<br>Благодаря проведённому ритуалу с огнём эта знакомая меня больше не беспокоит.<br>Большое спасибо Александру, Вы отлично справилилсь!
+                                            </div>
+                                    </div>
+                                    <div class="els pl2" style="display: none;">
+                                        <div class="Textinbox">
+                                            <h2>Леонов Арсений Александрович</h2>
+                                            Илья очень мне помог! До него обманывали не раз, но с помощью него я добился результата!</br>Более года не мог избавиться от алкогольной зависимости! До обращения к Илье выкинул много денег на ненастоящих психологов, лже-гипнотизёров, обещающих освобождения от зависимости с оплатой после – шантажировали и высасывали деньги! За два посещения гипнотизёра в цилиндре полностью избавился от недуга!!!<br />Спасибо Илье за помощь, обращайтесь к нему, он настоящий профессионал!!
+                                        </div>
+                                    </div>
+                                    <div class="els pl3" style="display: none;">
+                                        <div class="Textinbox">
+                                            <h2>Плаксин Артём Денисович</h2>
+                                            Я был на грани отчаяния, когда моя жена ушла к любовнику.</br>
+                                            Тогда я впервые услышал о ведьме, помогающей людям в трудных жизненных ситуациях и обратился к ней за помощью.</br>
+                                            Марта, выслушав мою историю, успокоила меня и пообещала, что всё будет хорошо.</br>
+                                            Ведьма произвела на меня сильное впечатление как специалист, её мудрость и спокойствие подарили мне уверенность в завтрашнем дне.</br>
+                                            После ритуала моя жена осознала свои ошибки и поняла, что наша семья - это самое важное в её жизни.</br>Марта действительно обладает невероятными способностями и может изменить вашу жизнь к лучшему.</br>
+                                            Мы все хотим сказать спасибо за всё, что Вы сделали для нас!!!
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            <div class="itcss_btn">
+                                <button class="btn_prev2" onclick="prev_2()"><img class="image" src="https://i.ibb.co/wdhk7BD/11.png"></button>
+                                <button class="btn_next2" onclick="next_2()"><img class="image" src="https://i.ibb.co/Hg7JWHN/12.png"></button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <div>
+                <div class="counts_cont">
+                    <div class="row">
+                        <div class="column">
+                            <h2 style="margin-left: 20px;"></h2>
+                            счастливых клиентов
+                        </div>
+                    <div style="margin-left: 20px; padding-left: 25px; border-left: 2px solid white;" class="column">
+                            <h2 style="margin-left: 20px;"></h2>
+                            проведённых ритуалов
+                        </div>
+                        <div style="margin-left: 25px; padding-left: 25px; border-left: 2px solid white;" class="column">
+                            <h2 style="margin-left: 20px;">458</h2>
+                            лет опыта магии и гаданий
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div>
+            <p class="text7">Наши контакты</p>
+            <p class="text8">Наши энергия и ясновидение действуют на расстоянии, мы можем с Вами общаться онлайн при помощи мессенджеров</p>
+            <div class="contacts_cont">
+                <div class="row">
+                    <div class="column">
+                        <a href="https://t.me/Kutrul"><img style="margin-right:20px; height: 90px; width: 120px;" class='tg' img src="https://i.ibb.co/8X0ZrWY/Titelloses-2792-20230614131921.png" alt="Telegram" /></a>
+                    </div>
+                    <div class="column">
+                        <a href="https://vk.com/mmmnebivodi"><img style=" padding-right: 20px; height: 100px; width: 140px;" class='tg' img src="https://i.ibb.co/Rygps2q/Titelloses-2792-20230614131942.png" alt="VKontakte" /></a>
+                    </div>
+                    <div class="column">
+                        <a href="https://wa.me/79851182906"><img style="margin-top: 20px; height: 70px; width: 110px;" class='tg' img src="https://i.ibb.co/KwcKF9w/Titelloses-2792-20230614132157.png" alt="WhatsApp" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mail_numb">
+            <div class="row">
+                <div class="column2" style="text-align: center; padding-left: 10px;" >
+                    <p style="color: #ecb982">Email</p>
+                    blaxor29@gmail.com
+                </div>
+                <div class="column2" style="text-align: center; border-left: 2px solid white; padding-left: 40px" >
+                    <p style="color: #ecb982">Telegram, Vkontakte, Viber, WhatsApp</p>
+                    +7(985)118-29-06
+                </div>
+            </div>
+        </div>
+        </div>
+    <script>
+        var date = new Date();
+        var countClient = Math.floor(date.getMilliseconds());
+        var countRitual = Math.floor((date.getMilliseconds()*1.5+15)+11);
+        var counters = document.querySelectorAll(".counts_cont h2");
+        counters[0].innerHTML = countClient;
+        counters[1].innerHTML = countRitual;
+        var images = document.querySelectorAll(".diploms_cont img");
+        for (var i = 0; i<images.length; i++){
+            images[i].addEventListener("click", function(){
+                    var modal = document.getElementById("myModal");
+                var modalImg = document.getElementById("img01");
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            });
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+
+    </script>
+</body>
+</html>
